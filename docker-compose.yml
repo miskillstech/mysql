@@ -1,0 +1,26 @@
+---
+version: '2'
+services:
+  server:
+    build: .
+    volumes:
+      - /ms/mysql/etc-supervisor-conf.d-services.conf:/etc/supervisor/conf.d/services.conf
+      - /ms/ta-data-repos/ta-data-mysql:/ms/ta-data-repos/ta-data-mysql
+      - /ms/mysql/var-log-mysql:/var/log/mysql
+    restart: unless-stopped
+    networks:
+      - emr
+    # ports:
+      # this is temporary
+      # Why?
+      # Becuase of this line the same docker-compose will not run in other environments.
+      # Since other environments do not have the IP 10.53.35.12       # TD is supposed to run zimbra from docker
+      # once zimbra is running from docker the following line will not be require
+      # why?
+      # laravel running inside zimbra will be able to connect to mysql docker by using links: mysqldocker
+      #- "10.53.35.9:3306:3306"
+
+networks:
+  emr:
+    external:
+      name: emr_default

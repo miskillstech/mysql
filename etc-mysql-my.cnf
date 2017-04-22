@@ -1,0 +1,47 @@
+[mysqld_safe]
+# this is the default path of the socket. If the default path is changed then in all command we will have to specify the path manually.
+# Hence the default path should not be changed.
+socket		= /var/run/mysqld/mysqld.sock
+nice		= 0
+
+[mysqld]
+user		= mysql
+pid-file	= /var/run/mysqld/mysqld.pid
+socket		= /var/run/mysqld/mysqld.sock
+port		= 3306
+basedir		= /usr
+datadir		= /ms/ta-data-repos/ta-data-mysql
+tmpdir		= /tmp
+lc-messages-dir	= /usr/share/mysql
+skip-external-locking
+bind-address		= 0.0.0.0
+key_buffer_size		= 16M
+max_allowed_packet	= 100M   # A. php 1. max_file_upload_size 2. post_max_size B. 1. max_size
+thread_stack		= 192K
+thread_cache_size       = 8
+#myisam-recover         = BACKUP  ## this only worked in ubuntu 15.10 and not in ubuntu 16.04
+log_error = /var/log/mysql/error.log
+expire_logs_days	= 10
+max_binlog_size   = 100M
+
+
+## To see queries with especially long duration
+# To see Config: SHOW VARIABLES LIKE '%slow_query%'
+slow_query_log_file	= /var/log/mysql/slow-queries.log
+slow_query_log = 1
+long_query_time = 2
+log-queries-not-using-indexes
+
+## Query check
+# status >SHOW STATUS LIKE "qcache%"
+# Configuration >SHOW VARIABLES LIKE '%query%'
+query_cache_limit	= 10M
+query_cache_size        = 200M
+query_cache_type 	= 1     # http://dev.mysql.com/doc/refman/5.6/en/server-system-variables.html#sysvar_query_cache_type
+
+
+## Innodb Cache
+innodb_buffer_pool_size = 6G    # This was recommended by mysqltuner. >apt-get install mysqltuner >mysqltuner --user root --pass jaikalima
+
+## when import VM there was a innodb_log_size error on 19th may 2016 hence increasing this number from the default value of 48M
+innodb_log_file_size = 200M
