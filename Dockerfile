@@ -21,7 +21,7 @@ ENV TERM screen
 # Step1: Install the mysql server
 RUN apt -y install wget lsb-release
 RUN wget http://repo.mysql.com/mysql-apt-config_0.8.0-1_all.deb && dpkg -i mysql-apt-config_0.8.0-1_all.deb
-RUN apt update
+RUN apt-get update
 # If DEBIAN_FRONTEND=noninteractive is not specified then during installation mysql will ask for password
 RUN DEBIAN_FRONTEND=noninteractive apt install -y mysql-server
 
